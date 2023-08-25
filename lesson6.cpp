@@ -1,13 +1,5 @@
-/*
- * This lesson continues lesson 2. Our aim along the way as we progress through the lessons is to avoid
- * making copies of the Vector. If the Vector conatins a billion elements, making copy will be very expensive.
- * In lesson 2 we fixed the copy in lesson 1. This lesson shows another pitfall and how we can unwittingly trigger
- * another copy operation.
- */
-
 #include <stdlib.h>
 #include <iostream>
-#include <memory>
 
 using namespace std;
 
@@ -41,30 +33,20 @@ class Vector {
         }
 };
 
-class A {
-public:
-    shared_ptr<Vector> x_;
-
-    A(shared_ptr<Vector> a) : x_(a) {
-        
-    }
-
-    Vector & x() {
-        return *x_;
-    }
-};
+// lesson: when returning a local variable, do not use & in the function signature
+// i.e., use Vector f() not Vector & f()
+Vector f() {
+    Vector v;
+    return v;
+}
 
 int main() {
-    auto p = make_shared<Vector>();
-    A a{p};
-    auto q = a.x(); // BAD: copy constructor triggered here! use & on LHS to avoid.
+    auto z = f();
     return 0;
 }
 
 /*
 Output:
 constructor
-copy constructor
-destructor
 destructor
 */

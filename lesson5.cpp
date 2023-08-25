@@ -62,7 +62,16 @@ class B {
 
     B(A & a) {
         v = a.pointer_to_vector();
-    }    
+    }
+};
+
+class C {
+    public:
+        Vector v;
+
+    C(A & a) {
+        v = std::move(*a.pointer_to_vector());  // use when you don't care about a and don't want consumers of C to have to use a pointer
+    }
 };
 
 void f(Vector & v) {
@@ -77,12 +86,16 @@ int main() {
     B b{a};         // OK: no copy triggered
     f(*q);          // OK: no copy triggered
     auto& z = *q;   // OK: no copy triggered
-    auto &w = a.vector(); // OK: no copy triggered. if you don't use & on LHS a copy will be triggered (see lesson 3)    
+    auto &w = a.vector();   // OK: no copy triggered
+    C c{a};         // OK: move will be triggered but move is understood to be efficient
     return 0;
 }
 
 /*
 Output:
 constructor
+constructor
+move assignment
+destructor
 destructor
 */

@@ -1,2 +1,5 @@
 #!/bin/bash
-g++ -o $1 $1.cpp -std=c++20 -Wall -Wextra -Wpedantic
+for cpp_file in *.cpp; do
+    filename="${cpp_file%.*}"
+    g++ -o "$filename" "$cpp_file" -std=c++20 -Wall -Wextra -Wpedantic
+done

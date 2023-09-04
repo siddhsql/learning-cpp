@@ -41,6 +41,9 @@ Vector f() {
 }
 
 int main() {
+    // auto &z will give following error:
+    // see: https://stackoverflow.com/questions/52115902/non-const-lvalue-reference-to-type-cannot-bind-to-a-temporary-of-type
+    // auto const& z will work
     auto z = f();
     return 0;
 }
